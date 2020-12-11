@@ -3,6 +3,8 @@ package com.applandeo.materialcalendarsampleapp;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.Menu;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -22,11 +24,18 @@ import java.util.Random;
  */
 
 public class CalendarActivity extends AppCompatActivity {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar_activity);
+
+
 
         // 이벤트 리스트
         List<EventDay> events = new ArrayList<>();

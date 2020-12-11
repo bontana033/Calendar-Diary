@@ -25,36 +25,81 @@
         >
 
         <LinearLayout
+            android:id="@+id/test22"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+
+            >
 
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="일정을 클릭했을 때 그날 일정이 나올 공간.(스크롤뷰)1" />
+                android:layout_margin="10sp"
+                android:text="#일정1"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="일정을 클릭했을 때 그날 일정이 나올 공간.(스크롤뷰)2" />
+                android:layout_margin="10sp"
+                android:text="#일정2"
+                android:textSize="30sp" />
+
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="일정을 클릭했을 때 그날 일정이 나올 공간.(스크롤뷰)3" />
+                android:layout_margin="10sp"
+                android:text="#일정3"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:text="#일정4"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:text="#일정5"
+                android:textSize="30sp" />
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/setDateButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:text="일정 추가" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Button_1" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Button_2" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Button_3" />
+    </LinearLayout>
 
 </LinearLayout>

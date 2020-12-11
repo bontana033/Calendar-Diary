@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Material Calendar View</string>
+    <string name="app_name">Calendar_Diary</string>
 
     <string name="material_calendar_monday">월</string>
     <string name="material_calendar_tuesday">화</string>
