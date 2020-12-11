@@ -7,13 +7,47 @@
     android:orientation="vertical"
     tools:context="com.applandeo.materialcalendarsampleapp.MainActivity">
 
+    <!-- android:layout_weight="1" -->
+
+
     <com.applandeo.materialcalendarview.CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:eventsEnabled="true"
+        app:type="one_day_picker" />
+
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        app:type="one_day_picker"
-        app:eventsEnabled="true" />
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="일정을 클릭했을 때 그날 일정이 나올 공간.(스크롤뷰)1" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="일정을 클릭했을 때 그날 일정이 나올 공간.(스크롤뷰)2" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="일정을 클릭했을 때 그날 일정이 나올 공간.(스크롤뷰)3" />
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/setDateButton"
@@ -21,6 +55,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="16dp"
-        android:text="Set random date" />
+        android:text="일정 추가" />
 
 </LinearLayout>

@@ -19,7 +19,7 @@
 
         <activity
             android:name=".CalendarActivity"
-            android:label="Standard calendar" />
+            android:label="Calendar Diary" />
 
         <activity
             android:name=".OneDayPickerActivity"
