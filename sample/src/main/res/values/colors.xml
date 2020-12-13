@@ -9,4 +9,8 @@
     <color name="sampleLighter">#4CAF50</color>
 
     <color name="dialogAccent">#795548</color>
+
+    <!-- DateActivity -->
+    <color name="date_layout_border">#50BCDF</color>
+    <color name="date_btn_color">#4B89DC</color>
 </resources>

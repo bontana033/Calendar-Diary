@@ -1,14 +1,17 @@
 package com.applandeo.materialcalendarsampleapp;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.applandeo.materialcalendarsampleapp.utils.DrawableUtils;
+import com.applandeo.materialcalendarsampleapp.view.DateActivity;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
@@ -28,6 +31,16 @@ public class CalendarActivity extends BlankActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_btn1 :
+                navigateTo(DateActivity.class, null);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
