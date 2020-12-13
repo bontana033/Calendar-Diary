@@ -23,7 +23,7 @@ import java.util.Random;
  * Created by Mateusz Kornakiewicz on 26.05.2017.
  */
 
-public class CalendarActivity extends AppCompatActivity {
+public class CalendarActivity extends BlankActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
