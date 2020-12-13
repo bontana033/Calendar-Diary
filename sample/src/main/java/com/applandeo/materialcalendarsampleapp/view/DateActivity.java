@@ -33,5 +33,6 @@ public class DateActivity extends BlankActivity {
             Intent intent = new Intent(DateActivity.this, RangePickerActivity.class);
             startActivityForResult(intent, 0);
         });
+
     }
 }
