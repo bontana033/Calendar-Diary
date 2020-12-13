@@ -107,24 +107,26 @@
             android:layout_marginBottom="8dp"
             android:background="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/et_dateRange"
+            app:layout_constraintEnd_toStartOf="@id/t_dateRange"
             app:layout_constraintStart_toEndOf="@id/tv_dateRange"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/et_dateRange"
+        <TextView
+            android:id="@+id/t_dateRange"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@android:color/transparent"
             android:ems="10"
+            android:gravity="center_vertical"
             android:hint="@string/date_dateRange_hint"
-            android:inputType="textPersonName"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/idc_dateRange"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
