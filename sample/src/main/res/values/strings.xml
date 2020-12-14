@@ -39,4 +39,9 @@
 
     <string name="date_btn_ok" translatable="false">완료</string>
     <string name="date_btn_cancel" translatable="false">취소</string>
+
+    <!-- DatePickerDialog -->
+    <string name="date_picker_btn_single_text" translatable="false">OneDay</string>
+    <string name="date_picker_btn_range_text" translatable="false">Range</string>
+    <string name="date_picker_btn_multiple_text" translatable="false">ManyDays</string>
 </resources>

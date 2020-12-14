@@ -10,14 +10,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.applandeo.materialcalendarsampleapp.BlankActivity;
+import com.applandeo.materialcalendarsampleapp.ManyDaysPickerActivity;
 import com.applandeo.materialcalendarsampleapp.R;
 import com.applandeo.materialcalendarsampleapp.RangePickerActivity;
+import com.applandeo.materialcalendarsampleapp.view.dialog.DatePickerDialog;
 
 public class DateActivity extends BlankActivity {
     /**
      * todo: 1. 기간 선택 화면 구현
      *       2. 완료 시 DB 저장
       */
+
+    /**
+     * todo: 기간 선택 화면 시
+     *       1. OneDayPicker, ManyDaysPicker, RangePicker 모드 필요
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +37,8 @@ public class DateActivity extends BlankActivity {
 
         TextView t_dateRange = findViewById(R.id.t_dateRange);
         t_dateRange.setOnClickListener(view -> {
-            Intent intent = new Intent(DateActivity.this, RangePickerActivity.class);
-            startActivityForResult(intent, 0);
+            DatePickerDialog dialog = new DatePickerDialog(this, R.style.ActivityDialogTheme);
+            dialog.show();
         });
     }
 }
