@@ -242,6 +242,23 @@ public class CalendarView extends LinearLayout {
         AppearanceUtils.setForwardButtonImage(getRootView(), mCalendarProperties.getForwardButtonSrc());
     }
 
+    public void setCalendarType(int typeId) {
+        mCalendarProperties.setCalendarType(typeId);
+    }
+
+    public int getCalendarType() {
+        return mCalendarProperties.getCalendarType();
+    }
+
+    public void reset(Calendar calendar) {
+        DateUtils.setMidnight(calendar);
+
+        mCalendarProperties.setSelectedDay(calendar);
+
+        mCurrentMonthLabel.setText(DateUtils.getMonthAndYearDate(mContext, calendar));
+        mCalendarPageAdapter.notifyDataSetChanged();
+    }
+
     private void setCalendarRowLayout() {
         if (mCalendarProperties.getEventsEnabled()) {
             mCalendarProperties.setItemLayoutResource(R.layout.calendar_view_day);
