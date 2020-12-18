@@ -23,6 +23,14 @@ public final class DrawableUtils {
         return new LayerDrawable(layers);
     }
 
+    public static Drawable getCircleDrawbleWithNumberPlus(Context context, int number){
+        Drawable background = ContextCompat.getDrawable(context, R.drawable.sample_circle);
+        Drawable text = CalendarUtils.getDrawableText(context, Integer.toString(number), null, android.R.color.white, 12);
+
+        Drawable[] layers = {background, text};
+        return new LayerDrawable(layers);
+    }
+
     public static Drawable getThreeDots(Context context){
         Drawable drawable = ContextCompat.getDrawable(context, R.drawable.sample_three_icons);
 

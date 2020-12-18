@@ -1,10 +1,14 @@
 package com.applandeo.materialcalendarsampleapp;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -19,6 +23,7 @@ import com.applandeo.materialcalendarview.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -27,6 +32,9 @@ import java.util.Random;
  */
 
 public class CalendarActivity extends BlankActivity {
+
+    private final String TAG = "my"+CalendarActivity.class.getSimpleName();
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -48,54 +56,16 @@ public class CalendarActivity extends BlankActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar_activity);
 
-
-
-        // 이벤트 리스트
-        List<EventDay> events = new ArrayList<>();
-
-        // Calendar 객체(단순 이벤트)
-        Calendar calendar = Calendar.getInstance();
-        events.add(new EventDay(calendar, DrawableUtils.getCircleDrawableWithText(this, "M")));
-
-        // Calendar1 객체(단순 이벤트)
-        Calendar calendar1 = Calendar.getInstance();
-        calendar1.add(Calendar.DAY_OF_MONTH, 10);
-        events.add(new EventDay(calendar1, R.drawable.sample_icon_2));
-
-        // Calendar2 객체(단순 이벤트)
-        Calendar calendar2 = Calendar.getInstance();
-        calendar2.add(Calendar.DAY_OF_MONTH, 10);
-        events.add(new EventDay(calendar2, R.drawable.sample_icon_3, Color.parseColor("#228B22")));
-
-        // Calendar3 객체(단순 이벤트)
-        Calendar calendar3 = Calendar.getInstance();
-        calendar3.add(Calendar.DAY_OF_MONTH, 7);
-        events.add(new EventDay(calendar3, R.drawable.sample_four_icons));
-
-        // Calendar4 객체(단순 이벤트)
-        Calendar calendar4 = Calendar.getInstance();
-        calendar4.add(Calendar.DAY_OF_MONTH, 13);
-        events.add(new EventDay(calendar4, DrawableUtils.getThreeDots(this)));
-
-
-
-        // 캘린더 뷰
         CalendarView calendarView = (CalendarView) findViewById(R.id.calendarView);
+        CalendarService calendarService = new CalendarService(calendarView, this, -12, 12);
 
-        // 캘린더 뷰에서 display할 이전 달 개수 설정
-        Calendar min = Calendar.getInstance();
-        min.add(Calendar.MONTH, -2);
+        // calendarService.addEvent(2020, 12, 13);
+        // calendarService.addEvent(2020, 12, 13);
 
-        // 캘린더 뷰에서 display할 다음 달 개수 설정
-        Calendar max = Calendar.getInstance();
-        max.add(Calendar.MONTH, 2);
+        insertDummy();
 
-        // 캘린더 뷰의 MinimumDate, MaximumDate 설정
-        calendarView.setMinimumDate(min);
-        calendarView.setMaximumDate(max);
 
-        // 캘린더 객체들 일괄 등록
-         calendarView.setEvents(events);
+
 
         // calendarView.setDisabledDays(getDisabledDays());
 
@@ -127,6 +97,35 @@ public class CalendarActivity extends BlankActivity {
 //                        Toast.LENGTH_LONG).show();
 //            }
 //        });
+    }
+
+    private void insertDummy() {
+        DBHelper helper =new DBHelper(this);
+        SQLiteDatabase db =helper.getWritableDatabase();
+        db.execSQL("delete from calendar");
+
+        ContentValues values = new ContentValues();
+        values.put("title", "testTitle");
+        values.put("content", "hi, i'm bong");
+
+        db.insert("calendar", null, values);
+
+        ContentValues values2 = new ContentValues();
+        values2.put("title", "toystory");
+        values2.put("content", "hi, i'm kim");
+
+        db.insert("calendar", null, values2);
+
+        Cursor cursor = db.rawQuery("select title, content from calendar order by _id", null);
+        Log.d(TAG, "hi");
+        Log.d(TAG, Integer.toString(cursor.getCount()));
+        cursor.moveToFirst();
+        do{
+            Log.d(TAG, cursor.toString());
+            Log.d(TAG, cursor.getString(0));
+        }while(cursor.moveToNext());
+
+        Log.d(TAG, "logcatcat3");
     }
 
     // disable시킬 날짜 반환하는 함수

@@ -112,4 +112,10 @@ public class EventDay {
     public void setEnabled(boolean enabled) {
         mIsDisabled = enabled;
     }
+
+
+
+    public void changeDrawble(int drawble){
+        mDrawable = drawble;
+    }
 }
