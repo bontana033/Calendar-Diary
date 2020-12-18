@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION=1;
     public DBHelper(Context context){
-        super(context, "memodb", null, DATABASE_VERSION);
+        super(context, "calendar", null, DATABASE_VERSION);
     }
 
     @Override
@@ -22,6 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "mode integer," +
                 "rangeStart," +
                 "rangeEnd," +
+                "place, " +
                 "x real," +
                 "y real" +
                 ")";
@@ -35,4 +36,9 @@ public class DBHelper extends SQLiteOpenHelper {
             onCreate(db);
         }
     }
+
+    public void dropTable(SQLiteDatabase db, String tableName){
+        db.execSQL("drop table " + tableName);
+    }
+
 }

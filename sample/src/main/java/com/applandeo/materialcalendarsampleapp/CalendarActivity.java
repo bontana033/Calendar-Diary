@@ -11,7 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.applandeo.materialcalendarsampleapp.utils.DrawableUtils;
@@ -34,6 +36,8 @@ import java.util.Random;
 public class CalendarActivity extends BlankActivity {
 
     private final String TAG = "my"+CalendarActivity.class.getSimpleName();
+    CalendarView calendarView;
+    CalendarService calendarService;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,14 +60,31 @@ public class CalendarActivity extends BlankActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar_activity);
 
-        CalendarView calendarView = (CalendarView) findViewById(R.id.calendarView);
-        CalendarService calendarService = new CalendarService(calendarView, this, -12, 12);
+        calendarView = (CalendarView) findViewById(R.id.calendarView);
 
-        // calendarService.addEvent(2020, 12, 13);
-        // calendarService.addEvent(2020, 12, 13);
+
+
+
+
+        calendarService = new CalendarService(calendarView, this, -12, 12);
+
 
         insertDummy();
 
+        checkDB();
+
+        // schedule card view
+        View container = findViewById(R.id.schedule_card_container);
+        calendarService.display(container);
+
+
+
+        // 스크롤뷰 크기
+//        ScrollView calendarScrollView = (ScrollView)findViewById(R.id.calendar_scrollview);
+//
+//        View index_padding_view = findViewById(R.id.index_padding_view);
+//        int positionY = index_padding_view.getTop();
+//        calendarScrollView.scrollTo(0, positionY);
 
 
 
@@ -99,33 +120,18 @@ public class CalendarActivity extends BlankActivity {
 //        });
     }
 
+    private void checkDB() {
+        calendarService.checkDB();
+    }
+
     private void insertDummy() {
-        DBHelper helper =new DBHelper(this);
-        SQLiteDatabase db =helper.getWritableDatabase();
-        db.execSQL("delete from calendar");
+        calendarService.addEvent(2020, 12, 20, "Test", "testContnetn1", "논현");
+        calendarService.addEvent(2020, 12, 21, "Test2", "testContnetn2",  "청량리");
+        calendarService.addEvent(2020, 12, 22, "Test3", "testContnetn3", "판교");
+        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
+        calendarService.addEvent(2020, 12, 25, "Test7", "testContnetn5", "회기");
 
-        ContentValues values = new ContentValues();
-        values.put("title", "testTitle");
-        values.put("content", "hi, i'm bong");
 
-        db.insert("calendar", null, values);
-
-        ContentValues values2 = new ContentValues();
-        values2.put("title", "toystory");
-        values2.put("content", "hi, i'm kim");
-
-        db.insert("calendar", null, values2);
-
-        Cursor cursor = db.rawQuery("select title, content from calendar order by _id", null);
-        Log.d(TAG, "hi");
-        Log.d(TAG, Integer.toString(cursor.getCount()));
-        cursor.moveToFirst();
-        do{
-            Log.d(TAG, cursor.toString());
-            Log.d(TAG, cursor.getString(0));
-        }while(cursor.moveToNext());
-
-        Log.d(TAG, "logcatcat3");
     }
 
     // disable시킬 날짜 반환하는 함수
@@ -137,7 +143,7 @@ public class CalendarActivity extends BlankActivity {
 
 //        Calendar secondDisabled = DateUtils.getCalendar();
 //        secondDisabled.add(Calendar.DAY_OF_MONTH, 1);
-//
+
 //        Calendar thirdDisabled = DateUtils.getCalendar();
 //        thirdDisabled.add(Calendar.DAY_OF_MONTH, 18);
 

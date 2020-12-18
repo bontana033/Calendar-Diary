@@ -10,12 +10,29 @@
     <!-- android:layout_weight="1" -->
 
 
-    <com.applandeo.materialcalendarview.CalendarView
-        android:id="@+id/calendarView"
+    <ScrollView
+        android:id="@+id/calendar_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:eventsEnabled="true"
-        app:type="one_day_picker" />
+        android:layout_height="386dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/index_padding_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.applandeo.materialcalendarview.CalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:eventsEnabled="true"
+                app:type="one_day_picker" />
+        </LinearLayout>
+    </ScrollView>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,54 +42,12 @@
         >
 
         <LinearLayout
-            android:id="@+id/test22"
+            android:id="@+id/schedule_card_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
 
-            >
-
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:text="#일정1"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:text="#일정2"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:text="#일정3"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:text="#일정4"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:text="#일정5"
-                android:textSize="30sp" />
-        </LinearLayout>
+            />
     </ScrollView>
 
     <LinearLayout
