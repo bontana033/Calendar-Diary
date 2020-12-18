@@ -115,7 +115,7 @@ public class EventDay {
 
 
 
-    public void changeDrawble(int drawble){
-        mDrawable = drawble;
+    public void changeDrawble(Drawable drawable){
+        mDrawable = drawable;
     }
 }

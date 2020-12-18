@@ -16,16 +16,18 @@ import com.applandeo.materialcalendarview.CalendarUtils;
 public final class DrawableUtils {
 
     public static Drawable getCircleDrawableWithText(Context context, String string) {
-        Drawable background = ContextCompat.getDrawable(context, R.drawable.sample_circle);
-        Drawable text = CalendarUtils.getDrawableText(context, string, null, android.R.color.white, 12);
-
-        Drawable[] layers = {background, text};
-        return new LayerDrawable(layers);
+        return getCircleDrawableWithText(context, Integer.parseInt(string));
     }
 
-    public static Drawable getCircleDrawbleWithNumberPlus(Context context, int number){
+    public static Drawable getCircleDrawableWithText(Context context, int string) {
         Drawable background = ContextCompat.getDrawable(context, R.drawable.sample_circle);
-        Drawable text = CalendarUtils.getDrawableText(context, Integer.toString(number), null, android.R.color.white, 12);
+        Drawable text;
+        if(string > 10){
+            text = CalendarUtils.getDrawableText(context, Integer.toString(10) + "+", null, android.R.color.white, 8);
+        }
+        else{
+            text = CalendarUtils.getDrawableText(context, Integer.toString(string), null, android.R.color.white, 12);
+        }
 
         Drawable[] layers = {background, text};
         return new LayerDrawable(layers);
