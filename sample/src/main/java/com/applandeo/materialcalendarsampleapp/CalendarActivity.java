@@ -62,20 +62,20 @@ public class CalendarActivity extends BlankActivity {
 
         calendarView = (CalendarView) findViewById(R.id.calendarView);
 
-
-
-
-
         calendarService = new CalendarService(calendarView, this, -12, 12);
 
 
-        insertDummy();
+        // insertDummy();
 
         checkDB();
 
         // schedule card view
         View container = findViewById(R.id.schedule_card_container);
         calendarService.display(container);
+
+        calendarService.putIconOnCalendar();
+
+        //calendarService.checkSchedules();
 
 
 

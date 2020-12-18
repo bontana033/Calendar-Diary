@@ -17,17 +17,21 @@ import com.applandeo.materialcalendarview.EventDay;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class CalendarService {
-
+    int monthArr[] = {-1, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     private CalendarView calendarView;
     private List<EventDay> events;
     private Context context;
     private DBHelper helper;
     SQLiteDatabase db;
     private final String TAG = CalendarService.class.getSimpleName();
-    ArrayList<Schedule> schedules[][];
+    // ArrayList<Integer> schedules[][][];
+    int schedules[][][];
+    private int curYear, curMonth, curDay, cuttedCurYear;
+    private int base1Year, base0Month, base0Day;
 
 
     public CalendarService(CalendarView calendarView, Context context, int minimumMonthAmount, int maximumMonthAmount) {
@@ -39,6 +43,22 @@ public class CalendarService {
         // 캘린더 뷰에서 display할 이전 달 개수 설정
         Calendar min = Calendar.getInstance();
         min.add(Calendar.MONTH, minimumMonthAmount);
+
+        // curMonth 설정
+        curMonth = min.get(Calendar.MONTH) + 1;
+        curYear = min.get(Calendar.YEAR) + 1;
+        curDay = min.get(Calendar.DAY_OF_MONTH);
+        cuttedCurYear = curYear - 2000;
+
+        base1Year = min.get(Calendar.YEAR) + 1;
+        base0Month = min.get(Calendar.MONTH);
+        base0Day = min.get(Calendar.DAY_OF_MONTH);
+
+
+
+
+
+
 
         // 캘린더 뷰에서 display할 다음 달 개수 설정
         Calendar max = Calendar.getInstance();
@@ -55,18 +75,68 @@ public class CalendarService {
         // helper.dropTable(db, "calendar");
 
         // schedules
-        schedules = new ArrayList[12][32];
+//        schedules = new ArrayList[100][12][32];
+        schedules = new int[30][13][32];
 
-        putIconOnCalendar();
+
     }
 
-    private void putIconOnCalendar() {
+    public void putIconOnCalendar() {
+//        Log.d(TAG, "hihihihih  " + curMonth);
+//        checkSchedules();
+        List<EventDay> event = new ArrayList();
 
+        // Calendar c = Calendar.getInstance();
+        // c.set(Calendar.DAY_OF_MONTH, 1);
+
+
+
+
+
+        Calendar tc = Calendar.getInstance();
+        event.add(new EventDay(tc, DrawableUtils.getCircleDrawableWithText(context,   "as")));
+
+        for (int i = 1; i <= monthArr[curMonth]; i++) {
+            int amount = schedules[cuttedCurYear][curMonth][i];
+            // Log.d(TAG, cuttedCurYear + " " + curMonth + " " + i + " " + amount);
+            Calendar c = getCalendarYearMonthDay(base1Year, base0Month, i);
+            if(amount > 10) {
+                Log.d(TAG, "h1  " + c.getTime());
+                event.add(new EventDay(c, DrawableUtils.getCircleDrawableWithText(context,   "10+")));
+            }
+            else if(amount > 0){
+                Log.d(TAG, "h2  " + c.getTime());
+                event.add(new EventDay(c, DrawableUtils.getCircleDrawableWithText(context, Integer.toString(amount))));
+            }
+            // Log.d(TAG, "month : " + c.getTime().toString());
+        }
+
+
+
+        calendarView.setEvents(event);
+
+    }
+
+    private Calendar getCalendarYearMonthDay(String year, String month, String day){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, Integer.parseInt(year));
+        c.set(Calendar.MONTH, Integer.parseInt(month));
+        c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day));
+
+        return c;
+    }
+    private Calendar getCalendarYearMonthDay(int year, int month, int day){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
+
+        return c;
     }
 
     // db 넣는 코드.
     public void addEvent(int year, int month, int day, String title, String content, String place){
-        
+
         ContentValues values = new ContentValues();
         values.put("title", title);
         values.put("content", content);
@@ -214,18 +284,18 @@ public class CalendarService {
 
     public void checkDB() {
         Cursor cursor = db.rawQuery("select title, content, year, month, day from calendar order by _id", null);
-        Log.d(TAG, "cursor count : " + Integer.toString(cursor.getCount()));
+        // Log.d(TAG, "cursor count : " + Integer.toString(cursor.getCount()));
         cursor.moveToFirst();
         do{
-            Log.d(TAG, cursor.toString());
-            Log.d(TAG, cursor.getString(0));
-            Log.d(TAG, cursor.getString(1));
-            Log.d(TAG, cursor.getString(2));
-            Log.d(TAG, cursor.getString(3));
-            Log.d(TAG, cursor.getString(4));
+//            Log.d(TAG, cursor.toString());
+//            Log.d(TAG, cursor.getString(0));
+//            Log.d(TAG, cursor.getString(1));
+//            Log.d(TAG, cursor.getString(2));
+//            Log.d(TAG, cursor.getString(3));
+//            Log.d(TAG, cursor.getString(4));
         }while(cursor.moveToNext());
 
-        Log.d(TAG, "logcatcat3");
+        // Log.d(TAG, "logcatcat3");
     }
 
     public void display(View view) {
@@ -244,9 +314,16 @@ public class CalendarService {
             5 place
              */
 
+
+
+
             String year = cursor.getString(2);
             String month = cursor.getString(3);
-            String day = cursor.getString(3);
+            String day = cursor.getString(4);
+
+            schedules[Integer.parseInt(year)-2000][Integer.parseInt(month)][Integer.parseInt(day)]++;
+            // Log.d(TAG, year + ", " + month  + ", " + day);
+
 
             String cursorTitle = cursor.getString(0);
             String cursorDate = year + "." + month + "." + day;
@@ -270,5 +347,9 @@ public class CalendarService {
         }while(cursor.moveToNext());
     }
 
-
+    public void checkSchedules(){
+        for (int i = 0; i < 32; i++) {
+            Log.d(TAG, i + " : " + Integer.toString(schedules[20][12][i]));
+        }
+    }
 }
