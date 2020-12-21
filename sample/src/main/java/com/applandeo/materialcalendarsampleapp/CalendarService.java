@@ -6,9 +6,12 @@ import android.database.Cursor;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.applandeo.materialcalendarsampleapp.utils.DrawableUtils;
 import com.applandeo.materialcalendarview.CalendarView;
@@ -110,11 +113,11 @@ public class CalendarService {
     // schedule를 새로 추가했을 때 해당 아이콘 +1 해주기(addSchedule의 콜백)
     public void putIconOnCalendar(Calendar calendar) {
         // 해당 달에 이미 icon이 렌더링됐다면
-        if(isDisplayed101base[calendar.get(Calendar.YEAR)][calendar.get(Calendar.MONTH)+1][calendar.get(Calendar.DAY_OF_MONTH)] > 0){
+        if(isDisplayed101base[calendar.get(Calendar.YEAR)][calendar.get(Calendar.MONTH)][calendar.get(Calendar.DAY_OF_MONTH)] > 0){
             return;
         }
         // 안됐다면
-        isDisplayed101base[calendar.get(Calendar.YEAR)][calendar.get(Calendar.MONTH)+1][calendar.get(Calendar.DAY_OF_MONTH)] = 1;
+        isDisplayed101base[calendar.get(Calendar.YEAR)][calendar.get(Calendar.MONTH)][calendar.get(Calendar.DAY_OF_MONTH)] = 1;
 
         // events 중에서 해당 schedule를 찾아 숫자 + 1
         for (int i = 1; i <= monthArr0base[calendar.get(Calendar.MONTH)]; i++) {
@@ -122,7 +125,7 @@ public class CalendarService {
             c.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
             c.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
             c.set(Calendar.DAY_OF_MONTH, i);
-            int amount = schedules101base[c.get(Calendar.YEAR)][c.get(Calendar.MONTH)+1][i];
+            int amount = schedules101base[c.get(Calendar.YEAR)][c.get(Calendar.MONTH)][i];
             if(amount > 0){
                 events.add(new EventDay(c, DrawableUtils.getCircleDrawableWithText(context, amount)));
             }
@@ -140,7 +143,7 @@ public class CalendarService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month-1);
+        calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
         plusSchedules(calendar);
         updateIconOnCalendar(calendar);
@@ -162,7 +165,7 @@ public class CalendarService {
     public void addSchedule(Schedule s){
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, s.year);
-        calendar.set(Calendar.MONTH, s.month-1);
+        calendar.set(Calendar.MONTH, s.month);
         calendar.set(Calendar.DAY_OF_MONTH, s.day);
         plusSchedules(calendar);
         updateIconOnCalendar(calendar);
@@ -181,25 +184,31 @@ public class CalendarService {
                 String day = cursor.getString(5);
                 String place = cursor.getString(6);
 
-                schedules101base[Integer.parseInt(year)][Integer.parseInt(month)][Integer.parseInt(day)]++;
+                schedules101base[Integer.parseInt(year)][Integer.parseInt(month) - 1][Integer.parseInt(day)]++;
             } while (cursor.moveToNext());
         }
     }
 
     // 해당 스케줄 숫자 +1
-    public void plusSchedules(Calendar calendar){
-        schedules101base[calendar.get(Calendar.YEAR)][calendar.get(Calendar.MONTH) + 1][calendar.get(Calendar.DAY_OF_MONTH)]++;
+    public void plusSchedules(Calendar c){
+        schedules101base[c.get(Calendar.YEAR)][c.get(Calendar.MONTH)][c.get(Calendar.DAY_OF_MONTH)]++;
+    }
+
+    private void minusIconOnCalendar(Calendar c) {
+        schedules101base[c.get(Calendar.YEAR)][c.get(Calendar.MONTH)][c.get(Calendar.DAY_OF_MONTH)]--;
+        Log.d(TAG, "amount : " + schedules101base[c.get(Calendar.YEAR)][c.get(Calendar.MONTH)][c.get(Calendar.DAY_OF_MONTH)] + "");
     }
 
     // 해당 아이콘 + 1
     public void updateIconOnCalendar(Calendar calendar){
-        int amount = schedules101base[calendar.get(Calendar.YEAR)][calendar.get(Calendar.MONTH) + 1][calendar.get(Calendar.DAY_OF_MONTH)];
+        int amount = schedules101base[calendar.get(Calendar.YEAR)][calendar.get(Calendar.MONTH)][calendar.get(Calendar.DAY_OF_MONTH)];
 //        if(amount == 0)
 //            Log.d(TAG, events.get(0).getCalendar().getTime().toString() + ",  " + amount + ",  " + calendar.get(Calendar.YEAR)  + ",  " + calendar.get(Calendar.MONTH)  + ",  " + calendar.get(Calendar.DAY_OF_MONTH));
         boolean isFound = false;
         for (int i = 0; i < events.size(); i++) {
             Calendar tc = events.get(i).getCalendar();
             if(tc.get(Calendar.YEAR) == calendar.get(Calendar.YEAR) && tc.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) && tc.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH)){
+                Log.d(TAG, "i found " + amount);
                 events.get(i).changeDrawble(DrawableUtils.getCircleDrawableWithText(context, amount));
                 isFound = true;
                 break;
@@ -221,7 +230,8 @@ public class CalendarService {
     public void displayScheduleCard(View view, int year, int month, int day) {
         clearContainer((ViewGroup)view);
 
-        Schedule s = new Schedule(year, month, day);
+
+        Schedule s = new Schedule(year, month+1, day);
 
 //        Cursor cursor = db.rawQuery("select _id, title, place from calendar where year = " + year + " and month = " + month + " and day = " + day, null);
         Cursor cursor = dbHelper.selectQuery(s, new String[]{"_id", "title", "place"});
@@ -233,7 +243,7 @@ public class CalendarService {
 
                 String cursorId = cursor.getString(0);
                 String cursorTitle = scheduleTitle;
-                String cursorDate = year + "." + month + "." + day;
+                String cursorDate = year + "." + (month + 1) + "." + day;
                 String cursorPlace = schedulePlace;
 
                 ScheduleCard scheduleCardLayout = new ScheduleCard(context);
@@ -252,19 +262,39 @@ public class CalendarService {
                 button1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(TAG, idTextView.getText().toString());
-
-                        Log.d(TAG, scheduleId);
-
                         Intent intent = new Intent(context, ScheduleDetail.class);
                         intent.putExtra("scheduleId", scheduleId);
                         context.startActivity(intent);
                     }
                 });
 
+                ImageButton checkButton = scheduleCardLayout.findViewById(R.id.check_button);
+                checkButton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "삭제되었습니다!", Toast.LENGTH_LONG).show();
+
+                        Animation anim_test = AnimationUtils.loadAnimation(context,R.anim.anim_test);
+                        scheduleCardLayout.startAnimation(anim_test);
+                        deleteOneSchedule(Integer.parseInt(scheduleId));
+                        Calendar c = Calendar.getInstance();
+                        c.set(Calendar.YEAR, year);
+                        c.set(Calendar.MONTH, month);
+                        c.set(Calendar.DAY_OF_MONTH, day);
+                        minusIconOnCalendar(c);
+                        updateIconOnCalendar(c);
+//                        Thread.sleep(1000);
+                        scheduleCardLayout.setVisibility(view.GONE);
+                    }
+                });
+
                 container.addView(scheduleCardLayout);
             } while (cursor.moveToNext());
         }
+    }
+
+    private void deleteOneSchedule(int scheduleId) {
+        dbHelper.deleteOneSchedule(scheduleId);
     }
 
     public Schedule getOneSchedule(int id){

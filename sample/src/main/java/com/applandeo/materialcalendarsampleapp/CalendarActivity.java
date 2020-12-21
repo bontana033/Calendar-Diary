@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 
@@ -66,9 +68,6 @@ public class CalendarActivity extends BlankActivity {
         // 더미 데이터 추가 코드
 //        insertDummy3();
 
-
-
-
         // schedules 배열 채우기
         calendarService.putSchedules();
 
@@ -81,7 +80,7 @@ public class CalendarActivity extends BlankActivity {
                 int year = eventDay.getCalendar().get(Calendar.YEAR);
                 int month = eventDay.getCalendar().get(Calendar.MONTH);
                 int day = eventDay.getCalendar().get(Calendar.DAY_OF_MONTH);
-                calendarService.displayScheduleCard(container, year, month+1, day);
+                calendarService.displayScheduleCard(container, year, month, day);
              }
         );
 
@@ -106,8 +105,6 @@ public class CalendarActivity extends BlankActivity {
         });
 
 //        insertDummy();
-
-
     }
 
 

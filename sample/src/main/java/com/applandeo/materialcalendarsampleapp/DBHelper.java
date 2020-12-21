@@ -133,4 +133,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public void deleteOneSchedule(int scheduleId) {
+        db.execSQL("delete from calendar where _id = " + scheduleId);
+    }
 }
