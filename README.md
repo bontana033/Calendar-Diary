@@ -4,10 +4,9 @@
 
 ##### 앱개발 DLM조 
 
+### 시연 영상
 
-> commit 4dc0d01
-
-![calendar_sample](./image/calendar_sample.png)
+[![CalenderDiary](http://img.youtube.com/vi/jXm6lDYmBs4/0.jpg)](https://youtu.be/jXm6lDYmBs4)
 
 
 ### update log
