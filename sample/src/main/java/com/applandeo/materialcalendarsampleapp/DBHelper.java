@@ -60,11 +60,12 @@ public class DBHelper extends SQLiteOpenHelper {
         if(schedule.title != null)  values.put("title", schedule.title);
         if(schedule.content != null)    values.put("content", schedule.content);
         if(schedule.year != DATE_NULL)  values.put("year", schedule.year);
-        if(schedule.month != DATE_NULL) values.put("month", schedule.month);
+        if(schedule.month != DATE_NULL) values.put("month", schedule.month+1);
         if(schedule.day != DATE_NULL)   values.put("day", schedule.day);
         if(schedule.place != null) values.put("place", schedule.place);
 
         db.insert("calendar", null, values);
+        Log.d("tt33", schedule.year + " " + (schedule.month + 1) + " " +  schedule.day);
     }
 
     public Cursor selectAllSchedule(){

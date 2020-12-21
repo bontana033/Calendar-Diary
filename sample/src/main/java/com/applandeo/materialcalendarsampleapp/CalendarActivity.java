@@ -2,19 +2,13 @@ package com.applandeo.materialcalendarsampleapp;
 
 import android.os.Bundle;
 
-import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBar;
-
-import com.applandeo.materialcalendarsampleapp.view.DateActivity;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.utils.DateUtils;
 
@@ -31,7 +25,7 @@ public class CalendarActivity extends BlankActivity {
 
     private final String TAG = "my"+CalendarActivity.class.getSimpleName();
     CalendarView calendarView;
-    CalendarService calendarService;
+    public static CalendarService calendarService;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -43,7 +37,7 @@ public class CalendarActivity extends BlankActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_btn1 :
-                navigateTo(DateActivity.class, null);
+                navigateTo(ScheduleAddActivity.class, null);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -100,7 +94,7 @@ public class CalendarActivity extends BlankActivity {
             @Override
             public void onClick(View v) {
 //                calendarService.addSchedule(2020, 12, 26, "hi title", "dddd", "파리");
-                calendarService.addSchedule("testTitle", "testContent", 2020, 12, 21, "하남");
+                calendarService.addScheduleYearMonthDay("testTitle", "testContent", 2020, 12, 21, "하남");
             }
         });
 
@@ -113,20 +107,20 @@ public class CalendarActivity extends BlankActivity {
         for (int i = 1; i <= 30; i++) {
             Log.d(TAG, (int)(10*Math.random())+"");
             for (int j = 0; j < (int)(10*Math.random()); j++) {
-                calendarService.addSchedule("testTitle" + i, "testContent" + i, 2020, 11, i, "12/21/4:48");
+                calendarService.addScheduleYearMonthDay("testTitle" + i, "testContent" + i, 2020, 11, i, "12/21/4:48");
             }
         }
         for (int i = 1; i <= 31; i++) {
             Log.d(TAG, (int)(10*Math.random())+"");
             for (int j = 0; j < (int)(10*Math.random()); j++) {
-                calendarService.addSchedule("testTitle" + i, "testContent" + i, 2020, 12, i, "12/21/4:48");
+                calendarService.addScheduleYearMonthDay("testTitle" + i, "testContent" + i, 2020, 12, i, "12/21/4:48");
             }
         }
 
         for (int i = 1; i <= 31; i++) {
             Log.d(TAG, (int)(10*Math.random())+"");
             for (int j = 0; j < (int)(10*Math.random()); j++) {
-                calendarService.addSchedule("testTitle" + i, "testContent" + i, 2021, 1, i, "12/21/4:48");
+                calendarService.addScheduleYearMonthDay("testTitle" + i, "testContent" + i, 2021, 1, i, "12/21/4:48");
             }
         }
     }
@@ -158,5 +152,9 @@ public class CalendarActivity extends BlankActivity {
         calendar.add(Calendar.MONTH, random.nextInt(99));
 
         return calendar;
+    }
+
+    public static CalendarService getCalendarService(){
+        return calendarService;
     }
 }

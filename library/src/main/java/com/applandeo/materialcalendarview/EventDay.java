@@ -118,4 +118,8 @@ public class EventDay {
     public void changeDrawble(Drawable drawable){
         mDrawable = drawable;
     }
+
+    public void deleteDrawble(){
+        mDrawable = null;
+    }
 }

@@ -3,6 +3,8 @@ package com.applandeo.materialcalendarsampleapp;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,11 +134,12 @@ public class CalendarService {
         }
         // events 렌더링
         calendarView.setEvents(events);
+
     }
 
     // db에 스케줄 넣는 코드. schedule에 숫자를 추가하고 callendar에 icon 숫자 + 1
 //    public void addSchedule(int year, int month, int day, String title, String content, String place){
-    public void addSchedule(String title, String content, int year, int month, int day, String place){
+    public void addScheduleYearMonthDay(String title, String content, int year, int month, int day, String place){
         Schedule s = new Schedule(title, content, year, month, day, place);
 //        dbHelper.addSchedule(year, month, day, title, content, place);
         dbHelper.addSchedule(s);
@@ -159,16 +162,29 @@ public class CalendarService {
     }
 
     public void addScheduleWithoutCallback(Schedule s){
-        addSchedule(s);
+        addScheduleYearMonthDay(s);
     }
 
-    public void addSchedule(Schedule s){
+    public void addScheduleYearMonthDay(Schedule s){
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, s.year);
         calendar.set(Calendar.MONTH, s.month);
         calendar.set(Calendar.DAY_OF_MONTH, s.day);
         plusSchedules(calendar);
         updateIconOnCalendar(calendar);
+    }
+
+    public void addSchedule(Schedule s){
+        dbHelper.addSchedule(s);
+
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, s.year);
+        c.set(Calendar.MONTH, s.month);
+        c.set(Calendar.DAY_OF_MONTH, s.day);
+        Log.d("tt33", "스케줄 추가");
+
+        plusSchedules(c);
+        updateIconOnCalendar(c);
     }
 
     // db 전체 스케줄을 전체 달력에 넣음(클릭했을 떄 스크롤 뷰에 나옴. 아이콘은 putIconOnCalendar에서
@@ -192,6 +208,7 @@ public class CalendarService {
     // 해당 스케줄 숫자 +1
     public void plusSchedules(Calendar c){
         schedules101base[c.get(Calendar.YEAR)][c.get(Calendar.MONTH)][c.get(Calendar.DAY_OF_MONTH)]++;
+        Log.d("tt33", "스케줄 배열 +1");
     }
 
     private void minusIconOnCalendar(Calendar c) {
@@ -209,7 +226,8 @@ public class CalendarService {
             Calendar tc = events.get(i).getCalendar();
             if(tc.get(Calendar.YEAR) == calendar.get(Calendar.YEAR) && tc.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) && tc.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH)){
                 Log.d(TAG, "i found " + amount);
-                events.get(i).changeDrawble(DrawableUtils.getCircleDrawableWithText(context, amount));
+                if(amount == 0) events.get(i).deleteDrawble();
+                else events.get(i).changeDrawble(DrawableUtils.getCircleDrawableWithText(context, amount));
                 isFound = true;
                 break;
             }
@@ -219,6 +237,7 @@ public class CalendarService {
         }
 
         calendarView.setEvents(events);
+        Log.d("tt33", "icon update");
     }
 
     // 스크롤 뷰 초기화용
@@ -272,10 +291,17 @@ public class CalendarService {
                 checkButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(context, "삭제되었습니다!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "삭제되었습니다!", Toast.LENGTH_SHORT).show();
+
+                        checkButton.setSelected(true);
+                        checkButton.setPressed(true);
+                        checkButton.setBackgroundColor(Color.parseColor("#000000"));
 
                         Animation anim_test = AnimationUtils.loadAnimation(context,R.anim.anim_test);
                         scheduleCardLayout.startAnimation(anim_test);
+                        checkButton.setImageResource(R.drawable.check_button);
+
+
                         deleteOneSchedule(Integer.parseInt(scheduleId));
                         Calendar c = Calendar.getInstance();
                         c.set(Calendar.YEAR, year);
@@ -283,8 +309,14 @@ public class CalendarService {
                         c.set(Calendar.DAY_OF_MONTH, day);
                         minusIconOnCalendar(c);
                         updateIconOnCalendar(c);
-//                        Thread.sleep(1000);
-                        scheduleCardLayout.setVisibility(view.GONE);
+                        scheduleCardLayout.setVisibility(view.INVISIBLE);
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                scheduleCardLayout.setVisibility(view.GONE);
+                            }
+                        }, 1000);
                     }
                 });
 

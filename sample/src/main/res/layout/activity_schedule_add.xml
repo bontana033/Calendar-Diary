@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.DateActivity">
+    tools:context=".ScheduleAddActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_title"
@@ -40,12 +40,12 @@
             android:layout_marginBottom="8dp"
             android:background="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/et_title"
+            app:layout_constraintEnd_toStartOf="@id/schedule_add_title"
             app:layout_constraintStart_toEndOf="@id/tv_title"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/et_title"
+            android:id="@+id/schedule_add_title"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="8dp"
@@ -84,49 +84,91 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_title">
 
-        <TextView
-            android:id="@+id/tv_dateRange"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:text="@string/date_tv_dateRange_header"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:id="@+id/date_picker_horizontal_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingRight="20dp"
+            tools:layout_editor_absoluteY="14dp">
 
-        <View
-            android:id="@+id/idc_dateRange"
-            android:layout_width="2dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/t_dateRange"
-            app:layout_constraintStart_toEndOf="@id/tv_dateRange"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_dateRange"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/date_tv_dateRange_header"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/t_dateRange"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@android:color/transparent"
-            android:ems="10"
-            android:gravity="center_vertical"
-            android:hint="@string/date_dateRange_hint"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/idc_dateRange"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            <View
+                android:id="@+id/idc_dateRange"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="8dp"
+                android:background="@android:color/black" />
+
+            <LinearLayout
+                android:id="@+id/button3_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                >
+
+                <Button
+                    android:id="@+id/one_day_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="하루 선택" />
+
+                <Button
+                    android:id="@+id/many_days_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="복수 날짜 선택" />
+
+                <Button
+                    android:id="@+id/range_picker_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="범위 선택" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/schedule_add_date_hide"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="invisible"
+                >
+
+                <EditText
+                    android:id="@+id/schedule_add_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:inputType="textPersonName"
+                    android:text="date"
+                    android:textColor="#000000"
+                     />
+
+                <Button
+                    android:id="@+id/re_select"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="다시 선택" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -176,12 +218,12 @@
             android:layout_marginBottom="8dp"
             android:background="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/et_place"
+            app:layout_constraintEnd_toStartOf="@id/schedule_add_place"
             app:layout_constraintStart_toEndOf="@id/tv_place"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/et_place"
+            android:id="@+id/schedule_add_place"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="8dp"
@@ -241,12 +283,12 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@android:color/black"
-            app:layout_constraintEnd_toStartOf="@id/et_content"
+            app:layout_constraintEnd_toStartOf="@id/schedule_add_content"
             app:layout_constraintStart_toEndOf="@id/tv_content"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/et_content"
+            android:id="@+id/schedule_add_content"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
@@ -255,11 +297,14 @@
             android:background="@android:color/transparent"
             android:ems="10"
             android:gravity="top|left"
-            android:inputType="textPersonName"
+            android:inputType="textMultiLine"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/idc_content"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+
+
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

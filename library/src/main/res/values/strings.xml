@@ -33,6 +33,6 @@
     </array>
 
     <string name="material_calendar_today_button">Today</string>
-    <string name="material_calendar_positive_button">OK</string>
-    <string name="material_calendar_negative_button">Cancel</string>
+    <string name="material_calendar_positive_button">선택</string>
+    <string name="material_calendar_negative_button">취소</string>
 </resources>

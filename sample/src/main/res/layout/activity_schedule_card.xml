@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".ScheduleCard">
 
     <LinearLayout
@@ -21,7 +22,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@android:drawable/checkbox_off_background" />
+            android:background="@color/colorPrimaryDark"
+            android:src="@drawable/check_button"
+            android:tint="#00FFFFFF" />
 
         <LinearLayout
             android:id="@+id/schedule_card_content_layout"

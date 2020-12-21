@@ -32,7 +32,7 @@
     <string name="date_tv_title_header" translatable="false">제 목</string>
     <string name="date_title_hint" translatable="false">제목을 입력하시오</string>
     <string name="date_tv_dateRange_header" translatable="false">기 간</string>
-    <string name="date_dateRange_hint" translatable="false">2020.01.01 ~ 2020.01.01</string>
+    <string name="date_dateRange_hint" translatable="false">2020.01.01</string>
     <string name="date_tv_place_header" translatable="false">장 소</string>
     <string name="date_place_hint" translatable="false">장소를 입력하시오</string>
     <string name="date_tv_content_header" translatable="false">내 용</string>

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.util.Log;
+
 import androidx.core.content.ContextCompat;
 
 import com.applandeo.materialcalendarsampleapp.R;
@@ -22,12 +24,12 @@ public final class DrawableUtils {
     public static Drawable getCircleDrawableWithText(Context context, int string) {
         Drawable background = ContextCompat.getDrawable(context, R.drawable.sample_circle);
         Drawable text;
-        if(string > 10){
+        if(string > 10)
             text = CalendarUtils.getDrawableText(context, Integer.toString(10) + "+", null, android.R.color.white, 8);
-        }
-        else{
+        else
             text = CalendarUtils.getDrawableText(context, Integer.toString(string), null, android.R.color.white, 12);
-        }
+
+
 
         Drawable[] layers = {background, text};
         return new LayerDrawable(layers);
