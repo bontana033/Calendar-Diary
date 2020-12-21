@@ -1,12 +1,12 @@
 package com.applandeo.materialcalendarsampleapp;
 
-import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,10 +23,11 @@ public class CalendarService {
     private CalendarView calendarView;
     private ArrayList<EventDay> events;
     private Context context;
-    private DBHelper helper;
-    SQLiteDatabase db;
+    private DBHelper dbHelper;
+    // SQLiteDatabase db;
+//    DBHelper dbHel
     private final String TAG = CalendarService.class.getSimpleName();
-    // [year][month][day]
+    // int schedules101base[year][month][day] : 일자별 스케줄 개수. year, month, day 각각 1, 0, 1 base index.
     int schedules101base[][][];
     LinearLayout container;
     Calendar curCalendar;
@@ -34,6 +35,18 @@ public class CalendarService {
     int isDisplayed101base[][][];
 
 
+    // CalendarView가 필요없는 constructor
+    public CalendarService(){
+
+    }
+
+    public CalendarService(Context context){
+        this.context = context;
+        // db
+        dbHelper = new DBHelper(context);
+    }
+
+    // CalendarView가 필요한 constructor
     public CalendarService(CalendarView calendarView, Context context, int minimumMonthAmount, int maximumMonthAmount, View view) {
         this.calendarView = calendarView;
         this.context = context;
@@ -52,8 +65,8 @@ public class CalendarService {
         calendarView.setMaximumDate(max);
 
         // db
-        helper =new DBHelper(context);
-        db = helper.getWritableDatabase();
+        dbHelper = new DBHelper(context);
+
 
         // schedules
         schedules101base = new int[3000][13][32];
@@ -94,7 +107,7 @@ public class CalendarService {
         putIconOnCalendar(c);
     }
 
-    // schedule를 새로 추가했을 때 해당 아이콘 +1 해주기(addEvent의 콜백)
+    // schedule를 새로 추가했을 때 해당 아이콘 +1 해주기(addSchedule의 콜백)
     public void putIconOnCalendar(Calendar calendar) {
         // 해당 달에 이미 icon이 렌더링됐다면
         if(isDisplayed101base[calendar.get(Calendar.YEAR)][calendar.get(Calendar.MONTH)+1][calendar.get(Calendar.DAY_OF_MONTH)] > 0){
@@ -119,15 +132,11 @@ public class CalendarService {
     }
 
     // db에 스케줄 넣는 코드. schedule에 숫자를 추가하고 callendar에 icon 숫자 + 1
-    public void addEvent(int year, int month, int day, String title, String content, String place){
-        ContentValues values = new ContentValues();
-        values.put("title", title);
-        values.put("content", content);
-        values.put("year", year);
-        values.put("month", month);
-        values.put("day", day);
-        values.put("place", place);
-        db.insert("calendar", null, values);
+//    public void addSchedule(int year, int month, int day, String title, String content, String place){
+    public void addSchedule(String title, String content, int year, int month, int day, String place){
+        Schedule s = new Schedule(title, content, year, month, day, place);
+//        dbHelper.addSchedule(year, month, day, title, content, place);
+        dbHelper.addSchedule(s);
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
@@ -138,18 +147,39 @@ public class CalendarService {
         // displayScheduleCard(container, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    public void addScheduleWithoutCallback(String title, String content, int year, int month, int day, String place){
+        Schedule s = new Schedule(title, content, year, month, day, place);
+//        dbHelper.addSchedule(year, month, day, title, content, place);
+        dbHelper.addSchedule(s);
+
+
+    }
+
+    public void addScheduleWithoutCallback(Schedule s){
+        addSchedule(s);
+    }
+
+    public void addSchedule(Schedule s){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, s.year);
+        calendar.set(Calendar.MONTH, s.month-1);
+        calendar.set(Calendar.DAY_OF_MONTH, s.day);
+        plusSchedules(calendar);
+        updateIconOnCalendar(calendar);
+    }
+
     // db 전체 스케줄을 전체 달력에 넣음(클릭했을 떄 스크롤 뷰에 나옴. 아이콘은 putIconOnCalendar에서
     public void putSchedules() {
-        Cursor cursor = db.rawQuery("select title, content, year, month, day, place from calendar order by _id", null);
+        Cursor cursor = dbHelper.selectAllSchedule();
         // Log.d(TAG, "cursor count : " + Integer.toString(cursor.getCount()));
         if(cursor.moveToFirst()) {
             do {
-                String title = cursor.getString(0);
-                String content = cursor.getString(1);
-                String year = cursor.getString(2);
-                String month = cursor.getString(3);
-                String day = cursor.getString(4);
-                String place = cursor.getString(5);
+                String title = cursor.getString(1);
+                String content = cursor.getString(2);
+                String year = cursor.getString(3);
+                String month = cursor.getString(4);
+                String day = cursor.getString(5);
+                String place = cursor.getString(6);
 
                 schedules101base[Integer.parseInt(year)][Integer.parseInt(month)][Integer.parseInt(day)]++;
             } while (cursor.moveToNext());
@@ -164,7 +194,8 @@ public class CalendarService {
     // 해당 아이콘 + 1
     public void updateIconOnCalendar(Calendar calendar){
         int amount = schedules101base[calendar.get(Calendar.YEAR)][calendar.get(Calendar.MONTH) + 1][calendar.get(Calendar.DAY_OF_MONTH)];
-        Log.d(TAG, events.get(0).getCalendar().getTime().toString() + ",  " + amount + ",  " + calendar.get(Calendar.YEAR)  + ",  " + calendar.get(Calendar.MONTH)  + ",  " + calendar.get(Calendar.DAY_OF_MONTH));
+//        if(amount == 0)
+//            Log.d(TAG, events.get(0).getCalendar().getTime().toString() + ",  " + amount + ",  " + calendar.get(Calendar.YEAR)  + ",  " + calendar.get(Calendar.MONTH)  + ",  " + calendar.get(Calendar.DAY_OF_MONTH));
         boolean isFound = false;
         for (int i = 0; i < events.size(); i++) {
             Calendar tc = events.get(i).getCalendar();
@@ -190,27 +221,64 @@ public class CalendarService {
     public void displayScheduleCard(View view, int year, int month, int day) {
         clearContainer((ViewGroup)view);
 
-        Cursor cursor = db.rawQuery("select _id, title, place from calendar where year = " + year + " and month = " + month + " and day = " + day, null);
+        Schedule s = new Schedule(year, month, day);
+
+//        Cursor cursor = db.rawQuery("select _id, title, place from calendar where year = " + year + " and month = " + month + " and day = " + day, null);
+        Cursor cursor = dbHelper.selectQuery(s, new String[]{"_id", "title", "place"});
         if(cursor.moveToFirst()) {
             do {
-                String title = cursor.getString(1);
-                String place = cursor.getString(2);
+                String scheduleId = cursor.getString(0);
+                String scheduleTitle = cursor.getString(1);
+                String schedulePlace = cursor.getString(2);
 
-                String cursorTitle = title;
+                String cursorId = cursor.getString(0);
+                String cursorTitle = scheduleTitle;
                 String cursorDate = year + "." + month + "." + day;
-                String cursorPlace = place;
+                String cursorPlace = schedulePlace;
 
                 ScheduleCard scheduleCardLayout = new ScheduleCard(context);
+
+                TextView idTextView = scheduleCardLayout.findViewById(R.id.schedule_card_id);
                 TextView titleTextView = scheduleCardLayout.findViewById(R.id.schedule_card_title);
                 TextView dateTextView = scheduleCardLayout.findViewById(R.id.schedule_card_date);
                 TextView placeTextView = scheduleCardLayout.findViewById(R.id.schedule_card_place);
 
+                idTextView.setText(cursorId);
                 titleTextView.setText(cursorTitle);
                 dateTextView.setText(cursorDate);
                 placeTextView.setText(cursorPlace);
 
+                ImageButton button1 = scheduleCardLayout.findViewById(R.id.schedule_add_button);
+                button1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG, idTextView.getText().toString());
+
+                        Log.d(TAG, scheduleId);
+
+                        Intent intent = new Intent(context, ScheduleDetail.class);
+                        intent.putExtra("scheduleId", scheduleId);
+                        context.startActivity(intent);
+                    }
+                });
+
                 container.addView(scheduleCardLayout);
             } while (cursor.moveToNext());
         }
+    }
+
+    public Schedule getOneSchedule(int id){
+        Cursor cursor = dbHelper.getOneSchedule(id);
+        if(cursor.moveToFirst()){
+            String title = cursor.getString(1);
+            String content = cursor.getString(2);
+            String year = cursor.getString(3);
+            String month = cursor.getString(4);
+            String day = cursor.getString(5);
+            String place = cursor.getString(6);
+
+            return new Schedule(title, content, year, month, day, place);
+        }
+        else    return null;
     }
 }

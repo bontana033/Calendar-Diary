@@ -2,6 +2,7 @@ package com.applandeo.materialcalendarsampleapp;
 
 import android.os.Bundle;
 
+import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.applandeo.materialcalendarsampleapp.utils.DrawableUtils;
+import androidx.appcompat.app.ActionBar;
+
 import com.applandeo.materialcalendarsampleapp.view.DateActivity;
 import com.applandeo.materialcalendarview.CalendarView;
-import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -50,6 +51,9 @@ public class CalendarActivity extends BlankActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar_activity);
+
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.hide();
 
         // schedule card view
         View container = findViewById(R.id.schedule_card_container);
@@ -96,66 +100,36 @@ public class CalendarActivity extends BlankActivity {
         button3.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                calendarService.addEvent(2020, 12, 26, "hi title", "dddd", "파리");
+//                calendarService.addSchedule(2020, 12, 26, "hi title", "dddd", "파리");
+                calendarService.addSchedule("testTitle", "testContent", 2020, 12, 21, "하남");
             }
         });
+
+//        insertDummy();
+
+
     }
 
-    private void insertDummy() {
-        calendarService.addEvent(2020, 12, 20, "Test", "testContnetn1", "논현");
-        calendarService.addEvent(2020, 12, 21, "Test2", "testContnetn2",  "청량리");
-        calendarService.addEvent(2020, 12, 21, "Test2", "testContnetn2",  "청량리");
-        calendarService.addEvent(2020, 12, 21, "Test2", "testContnetn2",  "청량리");
-        calendarService.addEvent(2020, 12, 21, "Test2", "testContnetn2",  "청량리");
-        calendarService.addEvent(2020, 12, 21, "Test2", "testContnetn2",  "청량리");
-        calendarService.addEvent(2020, 12, 21, "Test2", "testContnetn2",  "청량리");
-        calendarService.addEvent(2020, 12, 22, "Test3", "testContnetn3", "판교");
-        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
-        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
-        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
-        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
-        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
-        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
-        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
-        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
-        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
-        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
-        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
-        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
-        calendarService.addEvent(2020, 12, 23, "Test4", "testContnetn4", "왕십리");
-        calendarService.addEvent(2020, 12, 25, "Test7", "testContnetn5", "회기");
-        calendarService.addEvent(2020, 12, 25, "Test7", "testContnetn5", "회기");
-        calendarService.addEvent(2020, 12, 25, "Test7", "testContnetn5", "회기");
-        calendarService.addEvent(2020, 12, 25, "Test7", "testContnetn5", "회기");
-        calendarService.addEvent(2020, 12, 25, "Test7", "testContnetn5", "회기");
-        calendarService.addEvent(2020, 12, 25, "Test7", "testContnetn5", "회기");
-        calendarService.addEvent(2020, 12, 31, "Test8", "testContnetn5", "상봉");
-        calendarService.addEvent(2020, 12, 31, "Test8", "testContnetn5", "상봉");
-        calendarService.addEvent(2020, 12, 31, "Test8", "testContnetn5", "상봉");
-    }
-    public void insertDummy2(){
-        calendarService.addEvent(2020, 11, 31, "Test8", "testContnetn5", "상봉");
-        calendarService.addEvent(2020, 11, 31, "Test8", "testContnetn5", "상봉");
-        calendarService.addEvent(2020, 11, 31, "Test8", "testContnetn5", "상봉");
-        calendarService.addEvent(2020, 11, 31, "Test8", "testContnetn5", "상봉");
-        calendarService.addEvent(2020, 11, 31, "Test8", "testContnetn5", "상봉");
-
-        calendarService.addEvent(2020, 11, 11, "Test8", "testContnetn5", "상봉");
-        calendarService.addEvent(2020, 11, 12, "Test8", "testContnetn5", "상봉");
-        calendarService.addEvent(2020, 11, 12, "Test8", "testContnetn5", "상봉");
-        calendarService.addEvent(2020, 11, 12, "Test8", "testContnetn5", "상봉");
 
 
-        calendarService.addEvent(2020, 11, 1, "Test8", "testContnetn5", "상봉");
-        calendarService.addEvent(2020, 11, 1, "Test8", "testContnetn5", "상봉");
-        calendarService.addEvent(2020, 11, 1, "Test8", "testContnetn5", "상봉");
-    }
-
-    public void insertDummy3(){
+    public void insertDummy(){
+        for (int i = 1; i <= 30; i++) {
+            Log.d(TAG, (int)(10*Math.random())+"");
+            for (int j = 0; j < (int)(10*Math.random()); j++) {
+                calendarService.addSchedule("testTitle" + i, "testContent" + i, 2020, 11, i, "12/21/4:48");
+            }
+        }
         for (int i = 1; i <= 31; i++) {
             Log.d(TAG, (int)(10*Math.random())+"");
             for (int j = 0; j < (int)(10*Math.random()); j++) {
-                calendarService.addEvent(2021, 1, i, "Test" + i, "testContnent" + i, "hi");
+                calendarService.addSchedule("testTitle" + i, "testContent" + i, 2020, 12, i, "12/21/4:48");
+            }
+        }
+
+        for (int i = 1; i <= 31; i++) {
+            Log.d(TAG, (int)(10*Math.random())+"");
+            for (int j = 0; j < (int)(10*Math.random()); j++) {
+                calendarService.addSchedule("testTitle" + i, "testContent" + i, 2021, 1, i, "12/21/4:48");
             }
         }
     }

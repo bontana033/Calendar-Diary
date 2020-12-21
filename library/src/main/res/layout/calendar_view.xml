@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
@@ -20,7 +21,8 @@
             android:layout_height="0dp"
             android:src="@drawable/ic_arrow_left"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/currentDateLabel"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
@@ -30,18 +32,19 @@
             android:layout_height="0dp"
             android:src="@drawable/ic_arrow_right"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/currentDateLabel"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/currentDateLabel"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            app:layout_constraintLeft_toRightOf="@id/previousButton"
-            app:layout_constraintRight_toLeftOf="@id/forwardButton"
+            app:layout_constraintEnd_toStartOf="@id/forwardButton"
+            app:layout_constraintStart_toEndOf="@id/previousButton"
             app:layout_constraintTop_toTopOf="parent" />
 
 
